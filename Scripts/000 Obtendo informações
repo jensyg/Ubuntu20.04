@@ -144,6 +144,16 @@ EMPRESA=SYSTEC
 	echo -e "AS INFORMACOES ESTAO CORRETAS ? S/N" 
 	echo ""
 		read 
-		
+		touch /Ubuntu20.04/Scripts/001-Variaveis.sh
+		cat << EOF > /etc/systemd/system/samba-ad-dc.service
+			_IP_STATIC=$_IP_STATIC
+			_MASCARA=$_MASCARA
+			_NETWORK=$_NETWORK
+			_GATEWAY=$_GATEWAY
+			_INTERFACE_LAN=$_INTERFACE_LAN
+			_NOME_SERVIDOR=$_NOME_SERVIDOR
+			_NOME_DOMINIO_FQDN=$_NOME_DOMINIO_FQDN
+			_NOME_DOMINIO_NETBIOS=$_NOME_DOMINIO_NETBIOS
+EOF
 
 reboot

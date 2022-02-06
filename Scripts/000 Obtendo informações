@@ -143,6 +143,7 @@ EMPRESA=SYSTEC
 	echo ""
 	echo -e "AS INFORMACOES ESTAO CORRETAS ? S/N" 
 	echo ""
-		read resposta
+		read 
+		
 
 reboot

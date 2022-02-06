@@ -129,14 +129,14 @@ EMPRESA=SYSTEC
 	echo ""
 	echo ""
 	
-	echo -e '\e[36;3m' " IP DO SERVIDOR:  \e[m" 			$_IP_STATIC
-	echo -e '\e[36;3m' " MASCARA DE REDE:  \e[m" 			$_MASCARA
-	echo -e '\e[36;3m' " NETWORK DE REDE:  \e[m" 			$_NETWORK
-	echo -e '\e[36;3m' " GATEWAY DA REDE:  \e[m" 			$_GATEWAY
-	echo -e '\e[36;3m' " INTERFACE NA SWITCH:  \e[m" 		$_INTERFACE_LAN
-	echo -e '\e[36;3m' " NOME DO SERVIDOR:  \e[m" 			$_NOME_SERVIDOR
-	echo -e '\e[36;3m' " NOME DO DOMINIO:  \e[m" 			$_NOME_DOMINIO_FQDN
-	echo -e '\e[36;3m' " NOME NETBIOS:  \e[m" 				$_NOME_DOMINIO_NETBIOS
+	echo -e '\e[36;3m' " IP DO SERVIDOR:  		\e[m" 			$_IP_STATIC
+	echo -e '\e[36;3m' " MASCARA DE REDE:  		\e[m" 			$_MASCARA
+	echo -e '\e[36;3m' " NETWORK DE REDE:  		\e[m" 			$_NETWORK
+	echo -e '\e[36;3m' " GATEWAY DA REDE:  		\e[m" 			$_GATEWAY
+	echo -e '\e[36;3m' " INTERFACE NA SWITCH:	\e[m" 			$_INTERFACE_LAN
+	echo -e '\e[36;3m' " NOME DO SERVIDOR: 		\e[m" 			$_NOME_SERVIDOR
+	echo -e '\e[36;3m' " NOME DO DOMINIO:  		\e[m" 			$_NOME_DOMINIO_FQDN
+	echo -e '\e[36;3m' " NOME NETBIOS:   		\e[m"			$_NOME_DOMINIO_NETBIOS
 	echo ""
 	echo ""
 	echo "------------------------------------------------------------- "
@@ -144,16 +144,25 @@ EMPRESA=SYSTEC
 	echo -e "AS INFORMACOES ESTAO CORRETAS ? S/N" 
 	echo ""
 		read 
+			__IP_STATIC=$_IP_STATIC
+			__MASCARA=$_MASCARA
+			__NETWORK=$_NETWORK
+			__GATEWAY=$_GATEWAY
+			__INTERFACE_LAN=$_INTERFACE_LAN
+			__NOME_SERVIDOR=$_NOME_SERVIDOR
+			__NOME_DOMINIO_FQDN=$_NOME_DOMINIO_FQDN
+			__NOME_DOMINIO_NETBIOS=$_NOME_DOMINIO_NETBIOS
+
 		touch /Ubuntu20.04/Scripts/001-Variaveis.sh
-		cat << EOF > /etc/systemd/system/samba-ad-dc.service
-			_IP_STATIC=$_IP_STATIC
-			_MASCARA=$_MASCARA
-			_NETWORK=$_NETWORK
-			_GATEWAY=$_GATEWAY
-			_INTERFACE_LAN=$_INTERFACE_LAN
-			_NOME_SERVIDOR=$_NOME_SERVIDOR
-			_NOME_DOMINIO_FQDN=$_NOME_DOMINIO_FQDN
-			_NOME_DOMINIO_NETBIOS=$_NOME_DOMINIO_NETBIOS
+		cat << EOF > /Ubuntu20.04/Scripts/001-Variaveis.sh
+			__IP_STATIC=$_IP_STATIC
+			__MASCARA=$_MASCARA
+			__NETWORK=$_NETWORK
+			__GATEWAY=$_GATEWAY
+			__INTERFACE_LAN=$_INTERFACE_LAN
+			__NOME_SERVIDOR=$_NOME_SERVIDOR
+			__NOME_DOMINIO_FQDN=$_NOME_DOMINIO_FQDN
+			__NOME_DOMINIO_NETBIOS=$_NOME_DOMINIO_NETBIOS
 EOF
 
-reboot
+exit

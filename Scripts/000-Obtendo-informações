@@ -145,8 +145,8 @@ EMPRESA=SYSTEC
 	echo ""
 		read 
 	
-	touch /Ubuntu20.04/Scripts/001-Variaveis.sh
-		cat << EOF > /Ubuntu20.04/Scripts/001-Variaveis.sh
+	
+cat << EOF > /Ubuntu20.04/Scripts/001-Variaveis.sh
 			_IP_STATIC=$_IP_STATIC
 			_MASCARA=$_MASCARA
 			_NETWORK=$_NETWORK

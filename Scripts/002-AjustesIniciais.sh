@@ -31,7 +31,40 @@ _Comparar_String () {
 		done 
 }
 
+_ATualizar_Repositorios () {
 
+	Logo_Empresa
+
+	export DEBIAN_FRONTEND="noninteractive"
+	
+		Logo_Empresa
+		echo "ATUALIZANDO O SISTEMA -- AGUARDE"
+			sudo apt update -qq > /dev/null
+		
+		Logo_Empresa
+		echo "INSTALANDO bridge-utils ifenslave net-tools AGUARDE ..."
+			sudo apt -y install bridge-utils ifenslave net-tools -qq > /dev/null
+		
+		Logo_Empresa
+		echo "FAZENDO UPGRADE --  AGUARDE"	
+			sudo apt -y upgrade -qq > /dev/null
+		
+		Logo_Empresa
+		echo "FAZENDO dist-upgrade  --  AGUARDE"
+			sudo apt -y dist-upgrade -qq > /dev/null
+		
+		Logo_Empresa
+		echo "FAZENDO full_upgrade --  AGUARDE"
+			sudo apt -y full-upgrade -qq > /dev/null
+		
+		Logo_Empresa
+		echo "FAZENDO autoremove --  AGUARDE"
+			sudo apt -y autoremove -qq > /dev/null
+		
+		Logo_Empresa
+		echo "FINALIZANDO COM autoclean  --  AGUARDE"
+			sudo apt -y autoclean -qq > /dev/null
+}
 
 _Arquivo_Hostname () {
 	cat <<EOF > /etc/hostname
@@ -61,22 +94,30 @@ EOF
 }
 
 _Arquivo_Interfaces () {
-	cat << EOF > /etc/network/interfaces
+	cat << EOF > /etc/netplan/00-installer-config.yaml
 	# Gerado pelo script Systec -- Soluçoes em TI
 	# The loopback network interface
 
-	source /etc/network/interfaces.d/*	
-	
-	auto lo
-	iface lo inet loopback
-	
-	allow-hotplug $_LAN
-		iface $_LAN inet static
-		address $_IP
-		netmask $_MASCARA
-		network $_NETWORK
-		gateway $_GATEWAY
+	network:
+		ethernets:
+			$_INTERFACE_LAN:
+				dhcp4: false
+				addresses: [$_IP_STATIC/$_MASCARA]
+				gateway4: $_GATEWAY
+				nameservers:
+					addresses: [$_GATEWAY, 8.8.8.8, 8.8.4.4]
+					search: [$_NOME_DOMINIO_FQDN]
+	version: 2
 EOF
+
+sudo netplan --debug try
+sudo netplan --debug apply
+sudo systemd-resolve --status
+sudo ifconfig $_INTERFACE_LAN
+sudo ip address show $_INTERFACE_LAN
+sudo route -n
+sudo ip route
+
 }
 
 _Servico_SSH () {
@@ -103,6 +144,16 @@ EMPRESA=SYSTEC
 		else
 			apt-get install figlet -qq > /dev/null
 		fi
+
+		clear
+		Logo_Empresa
+		echo "VAMOS ATUALIZAR OS REPOSITORIOS -- (s/n)"
+		echo ""
+		echo ""
+		read RESPOSTA
+			if [ $RESPOSTA = "s" ] ; then
+				_ATualizar_Repositorios
+			fi
 
 		clear
 		Logo_Empresa
@@ -144,19 +195,6 @@ EMPRESA=SYSTEC
 		read RESPOSTA
 			if [ $RESPOSTA = "s" ] ; then
 				_Arquivo_Interfaces
-				ip addr flush dev $_LAN
-				sleep 1
-				ifdown $_LAN
-				sleep 1
-				ifup $_LAN
-				sleep 1
-				ping -c 2 google.com
-					if [ "$?" = 0 ] ; then
-						echo -e "\e[1;32m PARABENS !! SEU SERVIDOR ESTA CONECTADO A INTERNET PODEMOS CONTINUAR  \e[m";
-						echo ""
-						echo -e "\e[1;32m ENTER PARA CONTINUAR  \e[m";
-						read
-					fi
 			fi
 
 

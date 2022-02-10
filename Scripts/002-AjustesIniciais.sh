@@ -99,7 +99,7 @@ _Arquivo_Interfaces () {
 	# The loopback network interface
 
 	network:
-		ethernets:
+	    ethernets:
 			$_INTERFACE_LAN:
 				dhcp4: false
 				addresses: [$_IP_STATIC/$_MASCARA]
@@ -107,16 +107,43 @@ _Arquivo_Interfaces () {
 				nameservers:
 					addresses: [$_GATEWAY, 8.8.8.8, 8.8.4.4]
 					search: [$_NOME_DOMINIO_FQDN]
-	version: 2
+		version: 2
 EOF
 
+Logo_Empresa
+echo "APLICANDO sudo netplan --debug try"
 sudo netplan --debug try
+read
+
+Logo_Empresa
+echo "APLICANDO netplan --debug apply"
 sudo netplan --debug apply
+read
+
+Logo_Empresa
+echo "APLICANDO systemd-resolve --status"
 sudo systemd-resolve --status
+read
+
+Logo_Empresa
+echo "APLICANDO ifconfig $_INTERFACE_LAN"
 sudo ifconfig $_INTERFACE_LAN
+read
+
+Logo_Empresa
+echo "APLICANDO ip address show $_INTERFACE_LAN"
 sudo ip address show $_INTERFACE_LAN
+read
+
+Logo_Empresa
+echo "APLICANDO route -n"
 sudo route -n
+read
+
+Logo_Empresa
+echo "APLICANDO ip route"
 sudo ip route
+read
 
 }
 
